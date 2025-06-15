@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheInvestigationGame_15_06.Sensors;
 
 namespace TheInvestigationGame_15_06
 {
@@ -10,6 +11,8 @@ namespace TheInvestigationGame_15_06
     {
         static void Main(string[] args)
         {
+           
+            
         }
     }
 }
