@@ -43,9 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IranianAgents\IranianAgent.cs" />
     <Compile Include="Sensors\AudioSensor.cs" />
     <Compile Include="Main\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IranianAgents\FieldAgent.cs" />
     <Compile Include="Sensors\Sensor.cs" />
     <Compile Include="Sensors\ThermalSensor.cs" />
   </ItemGroup>

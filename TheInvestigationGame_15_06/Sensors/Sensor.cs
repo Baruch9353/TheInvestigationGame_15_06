@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace TheInvestigationGame_15_06
 {
-    public abstract class Sensor
+    internal abstract class Sensor
     {
-        public Sensor() { }
-
+        public abstract string Name { get; }
         public abstract bool Activate();
     }
+
 }
