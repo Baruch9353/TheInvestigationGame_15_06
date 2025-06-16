@@ -50,6 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IranianAgents\FootSoldier.cs" />
     <Compile Include="Sensors\Sensor.cs" />
+    <Compile Include="Sensors\SensorManager.cs" />
     <Compile Include="Sensors\ThermalSensor.cs" />
   </ItemGroup>
   <ItemGroup>
