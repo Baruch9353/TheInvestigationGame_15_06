@@ -1,56 +1,91 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheInvestigationGame_15_06.Sensors;
 
 namespace TheInvestigationGame_15_06.IranianAgents
 {
-
     internal abstract class IranianAgent
     {
-        Random rand = new Random();
-
         public abstract string AgentRank { get; }
+        // a List of all existing sensors
+        internal static List<Sensor> allSensors = new List<Sensor>
+        {
+            new AudioSensor(),
+            new ThermalSensor()
+        };
+        // a List of real weaknesses (that the player needs to discover)
+        internal List<Sensor> secretSensors = new List<Sensor>();
+
+        // a List of Sensors that the player has already discovered
+        internal List<Sensor> revealedSensors = new List<Sensor>();
+
+        //A constructor that takes an argument of several sensors
         protected IranianAgent(int numOfSensors)
         {
             AssignRandomSensors(numOfSensors);
         }
-
-        internal static List<Sensor> allSensors = new List<Sensor>
-        {
-        new AudioSensor(),
-        new ThermalSensor()
-        };
-
-        internal List<Sensor> selecteSensors = new List<Sensor>();
-
+        //Assign Random Sensors to the secret Sensors list
         private void AssignRandomSensors(int numOfSensors)
         {
-            
-
+            Random rand = new Random();
             for (int i = 0; i < numOfSensors; i++)
             {
                 int index = rand.Next(allSensors.Count);
-                selecteSensors.Add(allSensors[index]);
-                allSensors[index].Activate();
+                secretSensors.Add(allSensors[index]);
             }
         }
+        // Triggers a specific sensor, and returns the result as a string
+        public string ActivateSensor(Sensor sensor)
+        {
+            string activationResult = sensor.Activate(this);
 
-        
-
-
-
-        // test
-        //public void PrintMySensors()
-        //{
-        //    Console.WriteLine("This agent has:");
-        //    foreach (var sensor in selectedSensors)
-        //    {
-        //        Console.WriteLine(sensor.Name + ". ");
-        //    }
-        //}
+            if (IsInSecretSensors(sensor))
+            {
+                RevealSensor(sensor);
+                return activationResult + "\nA new weakness has been revealed! " + GetRevealStatus();
+            }
+            else
+            {
+                return "The censor did not discover any new weaknesses." + GetRevealStatus();
+            }
+        }
+        private string GetRevealStatus()
+        {
+            return $"{revealedSensors.Count}/{secretSensors.Count}";
+        }
+        public bool IsInSecretSensors(Sensor sensor)
+        {
+            foreach (Sensor secretSensor in secretSensors)
+            {
+                if (secretSensor.Name == sensor.Name)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        // Checks if a particular sensor has been exposed before
+        public bool IsSensorRevealed(Sensor sensor)
+        {
+            foreach (Sensor revealed in revealedSensors)
+            {
+                if (revealed.Name == sensor.Name)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        // Adds a sensor to the revealed Sensors list
+        public void RevealSensor(Sensor sensor)
+        {
+            revealedSensors.Add(sensor);
+        }
+        // Have all the weaknesses been exposed?
+        public bool IsRevealed()
+        {
+            return revealedSensors.Count == secretSensors.Count;
+        }
     }
-
 }

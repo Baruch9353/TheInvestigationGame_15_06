@@ -11,7 +11,8 @@ namespace TheInvestigationGame_15_06
     {
         static void Main(string[] args)
         {
-                   
+            GameManager gameManager = new GameManager();
+            gameManager.StartGame();
         }
     }
 }
