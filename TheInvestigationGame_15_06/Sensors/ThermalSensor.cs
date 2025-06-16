@@ -9,21 +9,22 @@ namespace TheInvestigationGame_15_06.Sensors
 {
     internal class ThermalSensor : Sensor
     {
-        public IranianAgent IranianAgent;
-
-        Random rand = new Random();
-
         public override string Name => "Thermal Sensor";
-        public override string Activated { get; protected set; } = "";
-        public override void Activate()
+        public override string Activate(IranianAgent agent)
         {
-            Activated = "activated";
+            return GetAnotherWeakness(agent);
+
         }
-        //Reveals one correct sensor type from the secret list.
-        internal string GetRandomWeakness()
+        private static string GetAnotherWeakness(IranianAgent agent)
         {
-            return $"One correct sensor from the secret list is: " +
-                 IranianAgent.selecteSensors[rand.Next(IranianAgent.selecteSensors.Count)].Name;
+            foreach (Sensor secret in agent.secretSensors)
+            {
+                if (!agent.IsSensorRevealed(secret))
+                {
+                    return $"Thermal Sensor activated! Get another weakness: {secret.Name}";
+                }
+            }
+            return "Thermal Sensor activate";
         }
     }
 }

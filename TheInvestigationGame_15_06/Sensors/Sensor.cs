@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheInvestigationGame_15_06.Sensors;
+using TheInvestigationGame_15_06.IranianAgents;
 
-namespace TheInvestigationGame_15_06
+namespace TheInvestigationGame_15_06.Sensors
 {
     internal abstract class Sensor
     {
         public abstract string Name { get; }
-
-        public abstract string Activated { get; protected set; }
-
-        public abstract void Activate();
+        public abstract string Activate(IranianAgent agent);
     }
-
-
 }

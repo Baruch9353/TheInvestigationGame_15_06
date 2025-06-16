@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheInvestigationGame_15_06.Sensors;
+using TheInvestigationGame_15_06.IranianAgents;
 
-namespace TheInvestigationGame_15_06
+namespace TheInvestigationGame_15_06.Sensors
 {
-    //Basic sensor.No special ability.
     internal class AudioSensor : Sensor
     {
         public override string Name => "Audio Sensor";
 
-        public override string Activated { get; protected set; } = "";
-
-        public override void Activate()
+        public override string Activate(IranianAgent agent)
         {
-            Activated = "activated";
+            return "Audio Sensor activate";
         }
     }
-
 }
