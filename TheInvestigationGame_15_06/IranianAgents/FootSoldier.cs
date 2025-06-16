@@ -7,9 +7,9 @@ using TheInvestigationGame_15_06.IranianAgents;
 
 namespace TheInvestigationGame_15_06.Sensors
 {
-    internal class FieldAgent : IranianAgent 
+    internal class FootSoldier : IranianAgent 
     {
-        public FieldAgent() : base(2)
+        public FootSoldier() : base(2)
         {
         }
     }

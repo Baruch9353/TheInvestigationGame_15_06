@@ -9,7 +9,7 @@ namespace TheInvestigationGame_15_06
     internal abstract class Sensor
     {
         public abstract string Name { get; }
-        public abstract bool Activate();
+        public abstract string Activate();
     }
 
 }

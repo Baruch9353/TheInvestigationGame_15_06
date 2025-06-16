@@ -10,11 +10,9 @@ namespace TheInvestigationGame_15_06
     internal class AudioSensor : Sensor
     {
         public override string Name => "Audio Sensor";
-        public override bool Activate()
+        public override string Activate()
         {
-            bool activated = true;
-            Console.WriteLine("Audio Sensor Activated");
-            return activated;
+            return "activated";
         }
     }
 }
