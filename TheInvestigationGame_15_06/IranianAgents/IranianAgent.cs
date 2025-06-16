@@ -40,15 +40,23 @@ namespace TheInvestigationGame_15_06.IranianAgents
         {
             string activationResult = sensor.Activate(this);
 
-            if (IsInSecretSensors(sensor))
+            if (IsInSecretSensors(sensor) && IfCanReveal(sensor))
             {
                 RevealSensor(sensor);
                 return activationResult + "\nA new weakness has been revealed! " + GetRevealStatus();
             }
             else
             {
-                return "The censor did not discover any new weaknesses." + GetRevealStatus();
+                return "The sensor did not discover any new weaknesses." + GetRevealStatus();
             }
+        }
+        //Checks the quantity of a specific sensor in the lists, Checking if possible to Reveal.
+        public bool IfCanReveal(Sensor sensor)
+        {
+            //(s =>) foreach-קיצור ל
+            int inSecret = secretSensors.Count(s => s.Name == sensor.Name); 
+            int revealed = revealedSensors.Count(s => s.Name == sensor.Name);
+            return revealed < inSecret;
         }
         private string GetRevealStatus()
         {
@@ -68,15 +76,9 @@ namespace TheInvestigationGame_15_06.IranianAgents
         // Checks if a particular sensor has been exposed before
         public bool IsSensorRevealed(Sensor sensor)
         {
-            foreach (Sensor revealed in revealedSensors)
-            {
-                if (revealed.Name == sensor.Name)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return revealedSensors.Any(s => s.Name == sensor.Name);
         }
+
         // Adds a sensor to the revealed Sensors list
         public void RevealSensor(Sensor sensor)
         {
@@ -85,7 +87,8 @@ namespace TheInvestigationGame_15_06.IranianAgents
         // Have all the weaknesses been exposed?
         public bool IsRevealed()
         {
-            return revealedSensors.Count == secretSensors.Count;
+            return secretSensors.All(s => revealedSensors.Any(r => r.Name == s.Name)) &&
+                   revealedSensors.All(r => secretSensors.Any(s => s.Name == r.Name));
         }
     }
 }
