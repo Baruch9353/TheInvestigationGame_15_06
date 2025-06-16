@@ -11,18 +11,20 @@ namespace TheInvestigationGame_15_06.IranianAgents
     internal abstract class IranianAgent
     {
         Random rand = new Random();
+
+        public abstract string AgentRank { get; }
         protected IranianAgent(int numOfSensors)
         {
             AssignRandomSensors(numOfSensors);
         }
 
-        protected static List<Sensor> allSensors = new List<Sensor>
+        internal static List<Sensor> allSensors = new List<Sensor>
         {
         new AudioSensor(),
         new ThermalSensor()
         };
 
-        protected List<Sensor> selecteSensors = new List<Sensor>();
+        internal List<Sensor> selecteSensors = new List<Sensor>();
 
         private void AssignRandomSensors(int numOfSensors)
         {
@@ -36,12 +38,7 @@ namespace TheInvestigationGame_15_06.IranianAgents
             }
         }
 
-        //Suitable for ThermalSensor --  Reveals one correct sensor type from the secret list.
-        internal string GetRandomWeakness()
-        {   
-            return $"One correct sensor from the secret list is: "+
-                 selecteSensors[rand.Next(selecteSensors.Count)].Name;
-        }
+        
 
 
 
