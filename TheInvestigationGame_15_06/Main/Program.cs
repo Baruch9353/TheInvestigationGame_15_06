@@ -11,8 +11,7 @@ namespace TheInvestigationGame_15_06
     {
         static void Main(string[] args)
         {
-           
-            
+                   
         }
     }
 }
