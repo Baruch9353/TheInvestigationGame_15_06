@@ -84,11 +84,24 @@ namespace TheInvestigationGame_15_06.IranianAgents
         {
             revealedSensors.Add(sensor);
         }
-        // Have all the weaknesses been exposed?
+
+        // Returns true if all secret sensors have been revealed, 
+        // + taking into account how many times each sensor appears.
         public bool IsRevealed()
         {
-            return secretSensors.All(s => revealedSensors.Any(r => r.Name == s.Name)) &&
-                   revealedSensors.All(r => secretSensors.Any(s => s.Name == r.Name));
+            var groupedSecret = secretSensors.GroupBy(s => s.Name); // Group secret sensors by name
+
+            foreach (var group in groupedSecret)
+            {
+                string sensorName = group.Key; // Get the sensor name (group key)
+                int requiredCount = group.Count(); // How many times it appears in secretSensors
+                int revealedCount = revealedSensors.Count(s => s.Name == sensorName); // How many times it was revealed
+
+                if (revealedCount < requiredCount) // If not all instances revealed
+                    return false;
+            }
+
+            return true; // All sensors revealed with correct count
         }
     }
 }
