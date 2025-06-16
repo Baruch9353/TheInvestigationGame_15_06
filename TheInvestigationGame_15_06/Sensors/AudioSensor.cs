@@ -10,9 +10,13 @@ namespace TheInvestigationGame_15_06
     internal class AudioSensor : Sensor
     {
         public override string Name => "Audio Sensor";
-        public override string Activate()
+
+        public override string Activated { get; protected set; } = "";
+
+        public override void Activate()
         {
-            return "activated";
+            Activated = "activated";
         }
     }
+
 }

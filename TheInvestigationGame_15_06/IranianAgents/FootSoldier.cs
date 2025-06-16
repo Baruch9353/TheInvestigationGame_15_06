@@ -9,6 +9,7 @@ namespace TheInvestigationGame_15_06.Sensors
 {
     internal class FootSoldier : IranianAgent 
     {
+        public override string AgentRank => "junior";
         public FootSoldier() : base(2)
         {
         }
