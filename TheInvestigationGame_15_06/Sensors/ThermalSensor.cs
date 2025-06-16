@@ -21,10 +21,16 @@ namespace TheInvestigationGame_15_06.Sensors
             {
                 if (!agent.IsSensorRevealed(secret))
                 {
-                    return $"Thermal Sensor activated! Get another weakness: {secret.Name}";
+                    string result = "Thermal Sensor activated!";
+                    if (!agent.IsRevealed())
+                    {
+                        result += $" Get another weakness: {secret.Name}";
+                    }
+                    return result;
                 }
             }
             return "Thermal Sensor activate";
         }
+
     }
 }
