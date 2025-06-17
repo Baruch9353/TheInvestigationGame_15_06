@@ -1,73 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
 using TheInvestigationGame_15_06.IranianAgents;
+using TheInvestigationGame_15_06.Main;
 using TheInvestigationGame_15_06.Sensors;
 
 namespace TheInvestigationGame_15_06
 {
     internal class GameManager
     {
-        private IranianAgent currentAgent;
-
+        private AgentProgressManager progressManager;
+        private SensorMenu sensorMenu;
         public void StartGame()
         {
-            Console.WriteLine("Welcome to The Investigation Game!");
-            Console.WriteLine("Starting investigation...\n");
-
-            // Create agent
-            currentAgent = new FootSoldier();
-
-            // Loop until all weaknesses are revealed
-            while (!currentAgent.sensorManager.IsRevealed())
-            {
-                ShowAvailableSensors();
-                HandleSensorChoice();
-            }
-
-            Console.WriteLine("The agent has been fully exposed!");
+            GameIntro.Show();
+            // Start with Foot Soldier agent
+            progressManager = new AgentProgressManager(new FootSoldier());
+            sensorMenu = new SensorMenu();
+            PlayAgentInvestigation();
+            // Move on to Squad Leader only if Foot Soldier exposed
+            progressManager.SwitchAgent(new SquadLeader());
+            PlayAgentInvestigation();
+            Console.WriteLine($"\nHighest agent exposed so far: {progressManager.HighestRankExposed}\n");
         }
-
-        private void ShowAvailableSensors()
+        // Main loop to play the investigation for current agent
+        private void PlayAgentInvestigation()
         {
-            Console.WriteLine("Available Sensors:");
-            for (int i = 0; i < SensorManager.allSensors.Count; i++)
+            int turn = 0;
+            while (!progressManager.IsAgentRevealed())
             {
-                Console.WriteLine($"{i + 1}. {SensorManager.allSensors[i].Name}");
+                turn++;
+                ShowSensorsMenu();
+                int choice = GetSensorChoiceFromUser();
+                if (choice != -1)
+                {
+                    ProcessSensorChoice(choice, turn);
+                }
+                else
+                {
+                    Console.WriteLine("\nInvalid choice. Please try again.\n");
+                }
             }
+            ShowAgentExposedMessage();
+            progressManager.UpdateHighestRank();
         }
-
-        private void HandleSensorChoice()
+        // Shows available sensors on screen
+        private void ShowSensorsMenu()
         {
-            Console.Write("Choose a sensor by number: ");
-            string input = Console.ReadLine();
-
-            int choice;
-            if (ValidChoice(input, out choice))
-            {
-                Sensor selectedSensor = SensorManager.allSensors[choice - 1];
-                string result = currentAgent.sensorManager.ActivateSensor(selectedSensor, currentAgent);
-                Console.WriteLine(result);
-            }
-            else
-            {
-                Console.WriteLine("Unvalid choice. Please try again.");
-            }
+            sensorMenu.ShowAvailableSensors();
         }
-
-        private bool ValidChoice(string input, out int choice)
+        // Reads user's choice, returns -1 if invalid
+        private int GetSensorChoiceFromUser()
         {
-            bool isNumber = int.TryParse(input, out choice);
-            if (!isNumber)
-            {
-                return false;
-            }
-            if (choice < 1 || choice > SensorManager.allSensors.Count)
-            {
-                return false;
-            }
-            return true;
+            bool valid = sensorMenu.GetSensorChoice(out int choice);
+            return valid ? choice : -1;
         }
+        // Process the chosen sensor and handle counterattack if needed
+        private void ProcessSensorChoice(int choice, int turn)
+        {
+            var sensor = SensorManager.allSensors[choice - 1];
+            string result = progressManager.ActivateSensor(sensor);
+            Console.WriteLine(result);
 
+            if (progressManager.CurrentAgent is SquadLeader squadLeader)
+            {
+                string counterAttackResult = squadLeader.HandleTurn(turn);
+                if (!string.IsNullOrEmpty(counterAttackResult))
+                {
+                    Console.WriteLine(counterAttackResult);
+                }
+            }
+        }
+        // Prints message when the agent is fully exposed
+        private void ShowAgentExposedMessage()
+        {
+            Console.WriteLine($"\n{progressManager.CurrentAgentRank} has been fully exposed!\n");
+        }
     }
 }
 

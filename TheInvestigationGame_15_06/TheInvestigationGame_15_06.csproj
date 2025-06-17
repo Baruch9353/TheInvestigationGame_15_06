@@ -44,15 +44,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IranianAgents\IranianAgent.cs" />
+    <Compile Include="IranianAgents\SquadLeader.cs" />
+    <Compile Include="Main\AgentProgressManager.cs" />
+    <Compile Include="Main\GameIntro.cs" />
     <Compile Include="Main\GameManager.cs" />
-    <Compile Include="Sensors\AudioSensor.cs" />
+    <Compile Include="Main\SensorMenu.cs" />
+    <Compile Include="Sensors\Allsensors\AudioSensor.cs" />
     <Compile Include="Main\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IranianAgents\FootSoldier.cs" />
-    <Compile Include="Sensors\PulseSensor.cs" />
-    <Compile Include="Sensors\Sensor.cs" />
-    <Compile Include="Sensors\SensorManager.cs" />
-    <Compile Include="Sensors\ThermalSensor.cs" />
+    <Compile Include="Sensors\Allsensors\PulseSensor.cs" />
+    <Compile Include="Sensors\MainSensor\Sensor.cs" />
+    <Compile Include="Sensors\MainSensor\SensorManager.cs" />
+    <Compile Include="Sensors\Allsensors\ThermalSensor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

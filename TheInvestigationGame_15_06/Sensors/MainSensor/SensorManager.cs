@@ -9,6 +9,7 @@ namespace TheInvestigationGame_15_06.Sensors
 {
     internal class SensorManager
     {
+        public Random rand = new Random();
         internal static List<Sensor> allSensors = new List<Sensor>
     {
         new AudioSensor(),
@@ -16,7 +17,7 @@ namespace TheInvestigationGame_15_06.Sensors
         new PulseSensor()   
     };
         internal List<Sensor> secretSensors = new List<Sensor>(); // a List of real weaknesses (that the player needs to discover)
-        internal List<Sensor> revealedSensors = new List<Sensor>(); // a List of Sensors that the player has already discovered
+        internal List<Sensor> attachedSensors = new List<Sensor>(); // a List of Sensors that the player has already discovered
         public SensorManager(int numOfSensors)
         {
             AssignRandomSensors(numOfSensors);
@@ -24,7 +25,6 @@ namespace TheInvestigationGame_15_06.Sensors
         //Assign Random Sensors to the secret Sensors list
         private void AssignRandomSensors(int numOfSensors)
         {
-            Random rand = new Random();
             for (int i = 0; i < numOfSensors; i++)
             {
                 int index = rand.Next(allSensors.Count);
@@ -42,7 +42,7 @@ namespace TheInvestigationGame_15_06.Sensors
             }
             else
             {
-                return "The sensor did not discover any new weaknesses." + GetRevealStatus();
+                return "\nThe sensor did not discover any new weaknesses." + GetRevealStatus();
             }
         }
         //Checks the quantity of a specific sensor in the lists, Checking if possible to Reveal.
@@ -50,12 +50,12 @@ namespace TheInvestigationGame_15_06.Sensors
         {
             //(s =>) foreach-קיצור ל
             int inSecret = secretSensors.Count(s => s.Name == sensor.Name);
-            int revealed = revealedSensors.Count(s => s.Name == sensor.Name);
+            int revealed = attachedSensors.Count(s => s.Name == sensor.Name);
             return revealed < inSecret;
         }
         private string GetRevealStatus()
         {
-            return $"\n\nYou chose: {revealedSensors.Count} correct choices / of {secretSensors.Count} sensors";
+            return $"\nYou chose: {attachedSensors.Count} correct choices / of {secretSensors.Count} sensors\n";
         }
         public bool IsInSecretSensors(Sensor sensor)
         {
@@ -71,12 +71,12 @@ namespace TheInvestigationGame_15_06.Sensors
         // Checks if a particular sensor has been exposed before
         public bool IsSensorRevealed(Sensor sensor)
         {
-            return revealedSensors.Any(s => s.Name == sensor.Name);
+            return attachedSensors.Any(s => s.Name == sensor.Name);
         }
         // Adds a sensor to the revealed Sensors list
         public void RevealSensor(Sensor sensor)
         {
-            revealedSensors.Add(sensor);
+            attachedSensors.Add(sensor);
         }
         // Returns true if all secret sensors have been revealed, 
         // + taking into account how many times each sensor appears.
@@ -87,9 +87,11 @@ namespace TheInvestigationGame_15_06.Sensors
             {
                 string sensorName = group.Key; // Get the sensor name (group key)
                 int requiredCount = group.Count(); // How many times it appears in secretSensors
-                int revealedCount = revealedSensors.Count(s => s.Name == sensorName); // How many times it was revealed
+                int revealedCount = attachedSensors.Count(s => s.Name == sensorName); // How many times it was revealed
                 if (revealedCount < requiredCount) // If not all instances revealed
+                {
                     return false;
+                }
             }
             return true; // All sensors revealed with correct count
         }

@@ -18,7 +18,7 @@ namespace TheInvestigationGame_15_06.Sensors
         {
             if (isBroken)
             {
-                return "Pulse Sensor is broken and can't be used.";
+                return "\nPulse Sensor is broken and can't be used.\n";
             }
 
             activationCount++;
@@ -26,10 +26,10 @@ namespace TheInvestigationGame_15_06.Sensors
             if (activationCount >= 3)
             {
                 isBroken = true;
-                return "Pulse Sensor has broken after 3 activations.";
+                return "\nPulse Sensor has broken after 3 activations.\n";
             }
 
-            return $"Pulse Sensor activated ({activationCount}/3). You can use it {3 - activationCount} more times.";
+            return $"\nPulse Sensor activated ({activationCount}/3).\n You can use it {3 - activationCount} more times.\n";
 
         }
     }

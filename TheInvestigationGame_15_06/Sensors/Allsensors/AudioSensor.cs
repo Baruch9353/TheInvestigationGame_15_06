@@ -14,7 +14,7 @@ namespace TheInvestigationGame_15_06.Sensors
 
         public override string Activate(IranianAgent agent)
         {
-            return "Audio Sensor activated!";
+            return "\nAudio Sensor activated!\n";
         }
     }
 }
