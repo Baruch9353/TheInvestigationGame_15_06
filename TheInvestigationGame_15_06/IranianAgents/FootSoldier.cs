@@ -7,11 +7,9 @@ using TheInvestigationGame_15_06.IranianAgents;
 
 namespace TheInvestigationGame_15_06.Sensors
 {
-    internal class FootSoldier : IranianAgent 
+    internal class FootSoldier : IranianAgent
     {
-        public override string AgentRank => "junior";
-        public FootSoldier() : base(2)
-        {
-        }
+        public override AgentRankLevel RankLevel => AgentRankLevel.FootSoldier;
+        public FootSoldier() : base(2) { }
     }
 }
