@@ -49,6 +49,7 @@
     <Compile Include="Main\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IranianAgents\FootSoldier.cs" />
+    <Compile Include="Sensors\PulseSensor.cs" />
     <Compile Include="Sensors\Sensor.cs" />
     <Compile Include="Sensors\SensorManager.cs" />
     <Compile Include="Sensors\ThermalSensor.cs" />

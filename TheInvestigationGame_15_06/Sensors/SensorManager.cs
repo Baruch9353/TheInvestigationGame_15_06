@@ -12,7 +12,8 @@ namespace TheInvestigationGame_15_06.Sensors
         internal static List<Sensor> allSensors = new List<Sensor>
     {
         new AudioSensor(),
-        new ThermalSensor()
+        new ThermalSensor(),
+        new PulseSensor()   
     };
         internal List<Sensor> secretSensors = new List<Sensor>(); // a List of real weaknesses (that the player needs to discover)
         internal List<Sensor> revealedSensors = new List<Sensor>(); // a List of Sensors that the player has already discovered
@@ -54,7 +55,7 @@ namespace TheInvestigationGame_15_06.Sensors
         }
         private string GetRevealStatus()
         {
-            return $"{revealedSensors.Count}/{secretSensors.Count}";
+            return $"\n\nYou chose: {revealedSensors.Count} correct choices / of {secretSensors.Count} sensors";
         }
         public bool IsInSecretSensors(Sensor sensor)
         {
