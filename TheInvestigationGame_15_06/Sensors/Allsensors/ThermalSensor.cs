@@ -13,19 +13,43 @@ namespace TheInvestigationGame_15_06.Sensors
         public override string Activate(IranianAgent agent)
         {
             string result = "\nThermal Sensor activated!\n";
-            var grouped = agent.sensorManager.secretSensors.GroupBy(s => s.Name);
-            foreach (var group in grouped)
+            List<Sensor> undiscovered = GetUndiscoveredWeaknesses(agent);
+            if (undiscovered.Count > 0)
             {
-                string sensorName = group.Key;
-                int requiredCount = group.Count();
-                int revealedCount = agent.sensorManager.attachedSensors.Count(s => s.Name == sensorName);
-                if (revealedCount < requiredCount)
-                {
-                    result += $"\nGet another weakness: {sensorName}\n";
-                    break; 
-                }
+                Sensor chosen = PickRandomWeakness(undiscovered);
+                result += $"Get another weakness: {chosen.Name}\n";
+            }
+            else
+            {
+                result += "No new weaknesses to reveal.\n";
             }
             return result;
+        }
+        private List<Sensor> GetUndiscoveredWeaknesses(IranianAgent agent)
+        {
+            List<Sensor> undiscovered = new List<Sensor>();
+            foreach (Sensor secretSensor in agent.sensorManager.secretSensors)
+            {
+                if (!IsSensorAttached(agent, secretSensor))
+                {
+                    undiscovered.Add(secretSensor);
+                }
+            }
+            return undiscovered;
+        }
+        private bool IsSensorAttached(IranianAgent agent, Sensor sensor)
+        {
+            foreach (Sensor attached in agent.sensorManager.attachedSensors)
+            {
+                if (attached.Name == sensor.Name)
+                    return true;
+            }
+            return false;
+        }
+        private Sensor PickRandomWeakness(List<Sensor> sensors)
+        {
+            int index = SensorManager.rand.Next(sensors.Count);
+            return sensors[index];
         }
     }
 }

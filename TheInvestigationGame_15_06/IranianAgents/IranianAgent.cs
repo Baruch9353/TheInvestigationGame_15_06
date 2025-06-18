@@ -7,10 +7,10 @@ namespace TheInvestigationGame_15_06.IranianAgents
 {
     public enum AgentRankLevel
     {
-        FootSoldier,
-        SquadLeader,
-        SeniorCommander,
-        OrganizationLeader
+        Foot_Soldier,
+        Squad_Leader,
+        Senior_Commander,
+        Organization_Leader
     }
     internal abstract class IranianAgent
     {

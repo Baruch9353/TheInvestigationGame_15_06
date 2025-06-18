@@ -11,7 +11,6 @@ namespace TheInvestigationGame_15_06.Sensors
     internal class AudioSensor : Sensor
     {
         public override string Name => "Audio Sensor";
-
         public override string Activate(IranianAgent agent)
         {
             return "\nAudio Sensor activated!\n";

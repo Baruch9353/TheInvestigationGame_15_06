@@ -11,6 +11,8 @@ namespace TheInvestigationGame_15_06.Sensors
     internal abstract class Sensor
     {
         public abstract string Name { get; }
+        public virtual bool IsUsable => true;
+
         public abstract string Activate(IranianAgent agent);
     }
 }
