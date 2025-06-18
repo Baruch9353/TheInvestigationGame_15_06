@@ -11,7 +11,7 @@ namespace TheInvestigationGame_15_06.Main
     internal class AgentProgressManager
     {
         public IranianAgent CurrentAgent { get; private set; }
-        public AgentRankLevel HighestRankExposed { get; private set; } = AgentRankLevel.FootSoldier;
+        public AgentRankLevel HighestRankExposed { get; private set; } = AgentRankLevel.Foot_Soldier;
         public AgentRankLevel CurrentAgentRank => CurrentAgent.RankLevel;
         public AgentProgressManager(IranianAgent startAgent)
         {
@@ -27,6 +27,7 @@ namespace TheInvestigationGame_15_06.Main
         }
         public void SwitchAgent(IranianAgent newAgent)
         {
+            Console.WriteLine("\nYou moved on to play against the next agent.\n");
             CurrentAgent = newAgent;
         }
         public void UpdateHighestRank()

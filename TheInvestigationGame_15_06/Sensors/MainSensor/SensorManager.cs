@@ -9,7 +9,7 @@ namespace TheInvestigationGame_15_06.Sensors
 {
     internal class SensorManager
     {
-        public Random rand = new Random();
+        public static Random rand = new Random();
         internal static List<Sensor> allSensors = new List<Sensor>
     {
         new AudioSensor(),
@@ -31,24 +31,30 @@ namespace TheInvestigationGame_15_06.Sensors
                 secretSensors.Add(allSensors[index]);
             }
         }
-        // Triggers a specific sensor, and returns the result as a string
+        //Activates a sensor, reveals new weaknesses if possible, and returns the result.
         public string ActivateSensor(Sensor sensor, IranianAgent agent)
         {
-            string activationResult = sensor.Activate(agent);
+            if (!sensor.IsUsable)
+            { 
+                return "\nThis sensor is no longer usable.\n";
+            }
+
+            string activation = sensor.Activate(agent);
+
             if (IsInSecretSensors(sensor) && IfCanReveal(sensor))
             {
-                RevealSensor(sensor);
-                return activationResult + "\nA new weakness has been revealed! " + GetRevealStatus();
+                attachedSensors.Add(sensor);
+                return activation + "\nA new weakness has been revealed! " + GetRevealStatus();
             }
             else
             {
-                return "\nThe sensor did not discover any new weaknesses." + GetRevealStatus();
+                return activation + "\nThe sensor did not discover any new weaknesses." + GetRevealStatus();
             }
         }
-        //Checks the quantity of a specific sensor in the lists, Checking if possible to Reveal.
+
+        //checks if there are still undiscovered weaknesses of the sensor’s type that can be revealed.
         public bool IfCanReveal(Sensor sensor)
         {
-            //(s =>) foreach-קיצור ל
             int inSecret = secretSensors.Count(s => s.Name == sensor.Name);
             int revealed = attachedSensors.Count(s => s.Name == sensor.Name);
             return revealed < inSecret;
@@ -59,41 +65,27 @@ namespace TheInvestigationGame_15_06.Sensors
         }
         public bool IsInSecretSensors(Sensor sensor)
         {
-            foreach (Sensor secretSensor in secretSensors)
-            {
-                if (secretSensor.Name == sensor.Name)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return secretSensors.Any(s => s.Name == sensor.Name);
         }
-        // Checks if a particular sensor has been exposed before
-        public bool IsSensorRevealed(Sensor sensor)
-        {
-            return attachedSensors.Any(s => s.Name == sensor.Name);
-        }
-        // Adds a sensor to the revealed Sensors list
-        public void RevealSensor(Sensor sensor)
-        {
-            attachedSensors.Add(sensor);
-        }
-        // Returns true if all secret sensors have been revealed, 
-        // + taking into account how many times each sensor appears.
+        //Checks if all secret sensors have been revealed in attached sensors.
         public bool IsRevealed()
         {
-            var groupedSecret = secretSensors.GroupBy(s => s.Name); // Group secret sensors by name
-            foreach (var group in groupedSecret)
+            List<Sensor> tempAttached = new List<Sensor>(attachedSensors);
+            foreach (Sensor secretSensor in secretSensors)
             {
-                string sensorName = group.Key; // Get the sensor name (group key)
-                int requiredCount = group.Count(); // How many times it appears in secretSensors
-                int revealedCount = attachedSensors.Count(s => s.Name == sensorName); // How many times it was revealed
-                if (revealedCount < requiredCount) // If not all instances revealed
+                bool foundMatch = false;
+                for (int i = 0; i < tempAttached.Count; i++)
                 {
-                    return false;
+                    if (tempAttached[i].Name == secretSensor.Name)
+                    {
+                        tempAttached.RemoveAt(i);
+                        foundMatch = true;
+                        break;
+                    }
                 }
+                if (!foundMatch) return false;
             }
-            return true; // All sensors revealed with correct count
+            return true;
         }
     }
 }
